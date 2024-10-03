@@ -1,0 +1,4 @@
+name: TestPlugin
+version: '1.0-SNAPSHOT'
+main: com.paeng.testPlugin.TestPlugin
+api-version: '1.21'
