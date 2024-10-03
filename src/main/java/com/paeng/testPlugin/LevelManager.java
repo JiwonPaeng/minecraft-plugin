@@ -3,7 +3,6 @@ package com.paeng.testPlugin;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -58,15 +57,13 @@ public class LevelManager {
 
         String message = category.getStyledName() + " §b(+" + value + ") "
                 + category.getColoredBar().repeat(permil / 20) + "§7|".repeat(50 - permil / 20)
-                + " §7(" + Integer.toString(permil / 10) + "." + Integer.toString(permil % 10) + "%)";
+                + " §7(" + permil / 10 + "." + permil % 10 + "%)";
 
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
     }
 
     // save HashMap Data to config.yml
     public void saveLevelData() {
-        TestPlugin pluginInstance = JavaPlugin.getPlugin(TestPlugin.class);
-
         for (ExpCat expcat : ExpCat.values()) {
             for (Map.Entry<String, Integer> element : Objects.requireNonNull(getLevelData(expcat)).entrySet())
                 modifiedFile.set("Data." + element.getKey() + "." + expcat.getName(), element.getValue());
@@ -77,14 +74,11 @@ public class LevelManager {
             modifiedFile.save(file);
         } catch (IOException exception) {
             Bukkit.getLogger().warning("IO Exception while trying to save file");
-            return;
         }
     }
 
     // load config.yml Data to HashMap
     public void loadLevelData() {
-        TestPlugin pluginInstance = JavaPlugin.getPlugin(TestPlugin.class);
-
         ConfigurationSection dataSection = modifiedFile.getConfigurationSection("Data");
 
         if (dataSection == null) return;

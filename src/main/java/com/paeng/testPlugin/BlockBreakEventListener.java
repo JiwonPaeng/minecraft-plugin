@@ -81,7 +81,5 @@ public class BlockBreakEventListener implements Listener {
 
         for (LevelManager.ExpCat expcat : LevelManager.ExpCat.values())
             manager.addExp(UUIDString, expcat, pluginInstance.getConfig().getInt("Broken." + expcat.getName() + "." + block.name()));
-
-        return;
     }
 }
