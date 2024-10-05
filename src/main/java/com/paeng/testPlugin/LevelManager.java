@@ -62,6 +62,16 @@ public class LevelManager {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
     }
 
+    public int getLevel(Player player) {
+        String UUIDString = player.getUniqueId().toString();
+
+        int totalLevel = 0;
+        for (ExpCat category : ExpCat.values()) {
+            totalLevel += getLevelData(category).get(UUIDString) / 10000;
+        }
+        return totalLevel;
+    }
+
     // save HashMap Data to config.yml
     public void saveLevelData() {
         for (ExpCat expcat : ExpCat.values()) {

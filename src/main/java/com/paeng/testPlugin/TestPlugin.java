@@ -13,6 +13,7 @@ public final class TestPlugin extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new EntityDeathEventListener(), this);
         getServer().getPluginManager().registerEvents(new BlockBreakEventListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerFishEventListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerChatEventListener(), this);
         getServer().getPluginManager().registerEvents(this, this);
 
         // load level data
