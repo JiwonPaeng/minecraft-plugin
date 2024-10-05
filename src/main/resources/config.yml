@@ -99,3 +99,201 @@ Killed:
     PufferFish: 120
     Squid: 100
     TropicalFish: 180
+Caught:
+  FISH:
+    COD:
+      weight: 60
+      reward: 300
+      name: "대구"
+    SALMON:
+      weight: 85
+      reward: 420
+      name: "연어"
+    PUFFERFISH:
+      weight: 98
+      reward: 900
+      name: "복어"
+    TROPICAL_FISH:
+      weight: 100
+      reward: 2160
+      name: "열대어"
+  COMMON:
+    STICK:
+      weight: 5
+      reward: 145
+      name: "막대기"
+    LILY_PAD:
+      weight: 22
+      reward: 70
+      name: "수련잎"
+    BOWL:
+      weight: 32
+      reward: 120
+      name: "그릇"
+    LEATHER:
+      weight: 42
+      reward: 100
+      name: "가죽"
+    ROTTEN_FLESH:
+      weight: 52
+      reward: 30
+      name: "썩은 살점"
+    BONE:
+      weight: 62
+      reward: 40
+      name: "뼈"
+    GLASS_BOTTLE:
+      weight: 72
+      reward: 90
+      name: "유리병"
+    STRING:
+      weight: 77
+      reward: 20
+      name: "실"
+    INK_SAC:
+      weight: 78
+      reward: 350
+      name: "먹물"
+    TRIPWIRE_HOOK:
+      weight: 88
+      reward: 130
+      name: "철사 덫 갈고리"
+    LEATHER_BOOTS:
+      weight: 98
+      reward: 85
+      name: "가죽 장화"
+    FISHING_ROD:
+      weight: 100
+      reward: 105
+      name: "낚싯대"
+  RARE:
+    NAME_TAG:
+      weight: 12
+      reward: 3400
+      name: "이름표"
+    NAUTILUS_SHELL:
+      weight: 24
+      reward: 3070
+      name: "앵무조개 껍데기"
+    SADDLE:
+      weight: 36
+      reward: 2600
+      name: "안장"
+    EXPERIENCE_BOTTLE:
+      weight: 48
+      reward: 2777
+      name: "경험치 병"
+    DIAMOND:
+      weight: 60
+      reward: 4000
+      name: "다이아몬드"
+    FISHING_ROD:
+      weight: 72
+      reward: 2800
+      name: "마법이 부여된 낚싯대"
+    GOLDEN_APPLE:
+      weight: 84
+      reward: 2840
+      name: "황금 사과"
+    BOW:
+      weight: 96
+      reward: 2920
+      name: "마법이 부여된 활"
+    SHULKER_SHELL:
+      weight: 100
+      reward: 4800
+      name: "셜커 껍데기"
+  EPIC:
+    ANCIENT_DEBRIS:
+      weight: 25
+      reward: 15000
+      name: "고대 잔해"
+    TOTEM_OF_UNDYING:
+      weight: 50
+      reward: 15000
+      name: "불사의 토템"
+    EXPERIENCE_BOTTLE:
+      weight: 60
+      reward: 15000
+      name: "1500 인첸트 경험치"
+    WITHER_SKELETON_SKULL:
+      weight: 80
+      reward: 15000
+      name: "위더 스켈레톤 해골"
+    MUSIC_DISC_13:
+      weight: 81
+      reward: 15000
+      name: "뮤직 디스크 - 13"
+    MUSIC_DISC_BLOCKS:
+      weight: 82
+      reward: 15000
+      name: "뮤직 디스크 - Blocks"
+    MUSIC_DISC_CAT:
+      weight: 83
+      reward: 15000
+      name: "뮤직 디스크 - Cat"
+    MUSIC_DISC_CHIRP:
+      weight: 84
+      reward: 15000
+      name: "뮤직 디스크 - Chirp"
+    MUSIC_DISC_MALL:
+      weight: 85
+      reward: 15000
+      name: "뮤직 디스크 - Mall"
+    MUSIC_DISC_MELLOHI:
+      weight: 86
+      reward: 15000
+      name: "뮤직 디스크 - Mellohi"
+    MUSIC_DISC_PIGSTEP:
+      weight: 87
+      reward: 15000
+      name: "뮤직 디스크 - Pigstep"
+    MUSIC_DISC_FAR:
+      weight: 88
+      reward: 15000
+      name: "뮤직 디스크 - Far"
+    MUSIC_DISC_WAIT:
+      weight: 89
+      reward: 15000
+      name: "뮤직 디스크 - Wait"
+    MUSIC_DISC_WARD:
+      weight: 90
+      reward: 15000
+      name: "뮤직 디스크 - Ward"
+    MUSIC_DISC_STAL:
+      weight: 91
+      reward: 15000
+      name: "뮤직 디스크 - Stal"
+    MUSIC_DISC_STRAD:
+      weight: 92
+      reward: 15000
+      name: "뮤직 디스크 - Strad"
+    ENCHANTED_GOLDEN_APPLE:
+      weight: 100
+      reward: 15000
+      name: "마법이 부여된 황금 사과"
+  LEGENDARY:
+    NETHERITE_INGOT:
+      weight: 40
+      reward: 75000
+      name: "네더라이트 주괴"
+    NETHERITE_PICKAXE:
+      weight: 60
+      reward: 75000
+      name: "마법이 부여된 네더라이트 곡괭이"
+    HEART_OF_THE_SEA:
+      weight: 70
+      reward: 75000
+      name: "바다의 심장"
+    BOW:
+      weight: 75
+      reward: 75000
+      name: "무한 수선 활"
+    NETHER_STAR:
+      weight: 85
+      reward: 75000
+      name: "네더의 별"
+    NETHERITE_HELMET:
+      weight: 100
+      reward: 75000
+      name: "마법이 부여된 네더라이트 투구"

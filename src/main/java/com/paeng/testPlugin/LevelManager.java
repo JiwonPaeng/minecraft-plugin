@@ -27,8 +27,8 @@ public class LevelManager {
     public enum ExpCat {
         COMBAT(0), MINING(1), FORAGE(2), FARMING(3), FISHING(4), BUILDING(5);
         private final int code;
-        private final String[] names = {"combat", "mining", "forage", "farming", "fishing", "building", "§a[☘]", "§3[\uD83C\uDFA3]", "§d[⦾]"};
-        private final String[] styledNames = {"§c[\uD83D\uDDE1]", "§e[⛏]", "§6[\uD83E\uDE93]"};
+        private final String[] names = {"combat", "mining", "forage", "farming", "fishing", "building"};
+        private final String[] styledNames = {"§c[\uD83D\uDDE1]", "§e[⛏]", "§6[\uD83E\uDE93]", "§a[☘]", "§3[\uD83C\uDFA3]", "§d[⦾]"};
         private final String[] coloredBars = {"§c|", "§e|", "§6|", "§a|", "§3|", "§d|"};
         ExpCat(final int desCode) { code = desCode; }
         public int getCode() { return code; }
@@ -94,8 +94,8 @@ public class LevelManager {
         TestPlugin pluginInstance = JavaPlugin.getPlugin(TestPlugin.class);
 
         // save default config.yml
-        pluginInstance.getConfig().options().copyDefaults();
-        pluginInstance.saveDefaultConfig();
+        pluginInstance.getConfig().options().copyDefaults(true);
+        pluginInstance.saveConfig();
 
         // data.yml logic
         file = new File(pluginInstance.getDataFolder(), "data.yml");
