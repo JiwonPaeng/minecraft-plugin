@@ -2,6 +2,7 @@ package com.paeng.testPlugin;
 
 import org.bukkit.Material;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -12,30 +13,30 @@ public class BlockBreakEventListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Material block = event.getBlock().getType();
-        String UUIDString = event.getPlayer().getUniqueId().toString();
+        Player player = event.getPlayer();
 
         LevelManager manager = new LevelManager();
         TestPlugin pluginInstance = JavaPlugin.getPlugin(TestPlugin.class);
 
         if (block == Material.WHEAT) {
             Ageable ageable = (Ageable) event.getBlock().getBlockData();
-            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(UUIDString, LevelManager.ExpCat.FARMING, 110);
+            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(player, LevelManager.ExpCat.FARMING, 110);
         }
         else if (block == Material.CARROTS) {
             Ageable ageable = (Ageable) event.getBlock().getBlockData();
-            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(UUIDString, LevelManager.ExpCat.FARMING, 78);
+            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(player, LevelManager.ExpCat.FARMING, 78);
         }
         else if (block == Material.POTATOES) {
             Ageable ageable = (Ageable) event.getBlock().getBlockData();
-            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(UUIDString, LevelManager.ExpCat.FARMING, 78);
+            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(player, LevelManager.ExpCat.FARMING, 78);
         }
         else if (block == Material.NETHER_WART) {
             Ageable ageable = (Ageable) event.getBlock().getBlockData();
-            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(UUIDString, LevelManager.ExpCat.FARMING, 85);
+            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(player, LevelManager.ExpCat.FARMING, 85);
         }
         else if (block == Material.SUGAR_CANE) {
             Ageable ageable = (Ageable) event.getBlock().getBlockData();
-            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(UUIDString, LevelManager.ExpCat.FARMING, 85);
+            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(player, LevelManager.ExpCat.FARMING, 85);
         }
 
         /*
@@ -80,6 +81,6 @@ public class BlockBreakEventListener implements Listener {
         */
 
         for (LevelManager.ExpCat expcat : LevelManager.ExpCat.values())
-            manager.addExp(UUIDString, expcat, pluginInstance.getConfig().getInt("Broken." + expcat.getName() + "." + block.name()));
+            manager.addExp(player, expcat, pluginInstance.getConfig().getInt("Broken." + expcat.getName() + "." + block.name()));
     }
 }

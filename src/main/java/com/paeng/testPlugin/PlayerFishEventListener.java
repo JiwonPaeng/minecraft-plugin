@@ -103,7 +103,7 @@ public class PlayerFishEventListener implements Listener {
         else Bukkit.broadcastMessage(item_class_styles[item_class_code] + item_class + "! §f" + player.getName() + "님이 " + name_kor + " §f을(를) 낚았습니다!");
 
         // 3. Grant Experience Points
-        manager.addExp(player.getUniqueId().toString(), LevelManager.ExpCat.FISHING, pluginInstance.getConfig().getInt("Caught." + item_class + "." + caught_material_name + ".reward"));
+        manager.addExp(player, LevelManager.ExpCat.FISHING, pluginInstance.getConfig().getInt("Caught." + item_class + "." + caught_material_name + ".reward"));
 
         // In-Game EXP Edge Case
         if (item_class.equals("EPIC") && name_kor.equals("1500 인첸트 경험치")) event.setExpToDrop(1500);
