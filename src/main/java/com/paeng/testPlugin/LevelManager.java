@@ -34,16 +34,20 @@ public class LevelManager {
         COMBAT(0), MINING(1), FORAGE(2), FARMING(3), FISHING(4);
         private final int code;
         private final String[] names = {"combat", "mining", "forage", "farming", "fishing"};
+        private final String[] names_kor = {"전투", "채광", "벌목", "농사", "낚시"};
         private final String[] styledNamesOpening = {"§c[\uD83D\uDDE1", "§e[⛏", "§6[\uD83E\uDE93", "§a[☘", "§3[\uD83C\uDFA3", "§d[⦾"};
+        private final String[] icon = {"§c\uD83D\uDDE1", "§e⛏", "§6\uD83E\uDE93", "§a☘", "§3\uD83C\uDFA3"};
         private final String[] coloredBars = {"§c|", "§e|", "§6|", "§a|", "§3|", "§d|"};
         ExpCat(final int desCode) { code = desCode; }
         public int getCode() { return code; }
         public String getName() { return names[code]; }
         public String getStyledNameOpening() { return styledNamesOpening[code]; }
         public String getColoredBar() { return coloredBars[code]; }
+        public String getIcon() { return icon[code] + " " + names_kor[code]; }
+        public String getKorName() { return names_kor[code]; }
     }
 
-    private HashMap<String, Integer> getExpData(ExpCat category) {
+    public HashMap<String, Integer> getExpData(ExpCat category) {
         if (category.getCode() == 0) return combatExp;
         if (category.getCode() == 1) return miningExp;
         if (category.getCode() == 2) return forageExp;
@@ -52,7 +56,7 @@ public class LevelManager {
         return null;
     }
 
-    private HashMap<String, Integer> getLevelData(ExpCat category) {
+    public HashMap<String, Integer> getLevelData(ExpCat category) {
         if (category.getCode() == 0) return combatLevel;
         if (category.getCode() == 1) return miningLevel;
         if (category.getCode() == 2) return forageLevel;
@@ -69,12 +73,11 @@ public class LevelManager {
 
         while (getExpData(category).get(UUIDString) >= getExpRequirements(getLevel(player, category))) {
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1.0F,1.0F);
-            String[] icon = {"§c\uD83D\uDDE1 전투", "§e⛏ 채광", "§6\uD83E\uDE93 벌목", "§a☘ 농사", "§3\uD83C\uDFA3 낚시"};
 
             getExpData(category).put(UUIDString, getExpData(category).get(UUIDString) - getExpRequirements(getLevel(player, category)));
             getLevelData(category).put(UUIDString, getLevelData(category).get(UUIDString) + 1);
 
-            Bukkit.broadcastMessage("§e↑ " + player.getName()+"§f님이 "+ icon[category.getCode()] + " §e" + getLevel(player, category) +"레벨§f을 달성했습니다!");
+            Bukkit.broadcastMessage("§e↑ " + player.getName()+"§f님이 "+ category.getIcon() + " §e" + getLevel(player, category) +"레벨§f을 달성했습니다!");
         }
 
         double progress = getProgress(player, category);
@@ -95,7 +98,7 @@ public class LevelManager {
     }
 
     int[] exp_requirements = {10000, 10000, 20000, 20000, 30000, 30000, 40000, 40000, 50000, 50000, 50000};
-    private int getExpRequirements(int i) {
+    public int getExpRequirements(int i) {
         if (i < 10) return exp_requirements[i];
         return exp_requirements[10];
     }

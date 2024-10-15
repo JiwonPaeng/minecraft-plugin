@@ -9,12 +9,17 @@ public final class TestPlugin extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        // register events
+        // Events
         getServer().getPluginManager().registerEvents(new EntityDeathEventListener(), this);
         getServer().getPluginManager().registerEvents(new BlockBreakEventListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerFishEventListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerChatEventListener(), this);
+        getServer().getPluginManager().registerEvents(new Profile(), this);
         getServer().getPluginManager().registerEvents(this, this);
+
+        // Command Executors
+        getCommand("profile").setExecutor(new Profile());
+        getCommand("menu").setExecutor(new Profile());
 
         // load level data
         LevelManager manager = new LevelManager();

@@ -1,4 +1,11 @@
 name: TestPlugin
-version: '1.0-SNAPSHOT'
+version: '2024.10'
+authors: [jiwonpaeng, mmiimin]
 main: com.paeng.testPlugin.TestPlugin
 api-version: '1.21'
+commands:
+  menu:
+    description: Calls up user profile (try /m)
+    aliases: m
+  profile:
+    description: Calls up user profile
