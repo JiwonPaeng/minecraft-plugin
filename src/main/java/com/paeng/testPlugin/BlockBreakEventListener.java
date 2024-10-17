@@ -1,86 +1,78 @@
 package com.paeng.testPlugin;
 
+import net.coreprotect.CoreProtectAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import net.coreprotect.CoreProtect;
+
+import java.util.ArrayList;
 
 public class BlockBreakEventListener implements Listener {
 
+    private ArrayList<Location> recentBlocks = new ArrayList<>();
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        recentBlocks.add(event.getBlock().getLocation());
+        if (recentBlocks.size() > 100) recentBlocks.removeFirst();
+    }
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+        CoreProtectAPI coreProtect = getCoreProtect();
+
         Material block = event.getBlock().getType();
         Player player = event.getPlayer();
 
         LevelManager manager = new LevelManager();
         TestPlugin pluginInstance = JavaPlugin.getPlugin(TestPlugin.class);
 
-        if (block == Material.WHEAT) {
-            Ageable ageable = (Ageable) event.getBlock().getBlockData();
-            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(player, LevelManager.ExpCat.FARMING, 110);
-        }
-        else if (block == Material.CARROTS) {
-            Ageable ageable = (Ageable) event.getBlock().getBlockData();
-            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(player, LevelManager.ExpCat.FARMING, 78);
-        }
-        else if (block == Material.POTATOES) {
-            Ageable ageable = (Ageable) event.getBlock().getBlockData();
-            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(player, LevelManager.ExpCat.FARMING, 78);
-        }
-        else if (block == Material.NETHER_WART) {
-            Ageable ageable = (Ageable) event.getBlock().getBlockData();
-            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(player, LevelManager.ExpCat.FARMING, 85);
-        }
-        else if (block == Material.SUGAR_CANE) {
-            Ageable ageable = (Ageable) event.getBlock().getBlockData();
-            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(player, LevelManager.ExpCat.FARMING, 85);
+        if (block == Material.PUMPKIN || block == Material.MELON) {
+            if (coreProtect.blockLookup(event.getBlock(), 120).isEmpty() && !recentBlocks.contains(event.getBlock().getLocation()))
+                manager.addExp(player, LevelManager.ExpCat.FARMING, pluginInstance.getConfig().getInt("Broken.farming." + block.name()));
+            return;
         }
 
-        /*
-        Original Data From CosmicSurvival
+        if (block == Material.SUGAR_CANE || block == Material.BAMBOO) {
+            if (!coreProtect.blockLookup(event.getBlock(), 120).isEmpty() || recentBlocks.contains(event.getBlock().getLocation())) return;
+            Location event_location = event.getBlock().getLocation();
+            int height = event.getBlock().getLocation().getBlockY();
+            for (; height < 320; height++) {
+                Location location = new Location(event.getBlock().getWorld(), event_location.getBlockX(), height, event_location.getBlockZ());
+                if (location.getBlock().getType() != block || !coreProtect.blockLookup(location.getBlock(), 150).isEmpty()) break;
+            }
+            manager.addExp(player, LevelManager.ExpCat.FARMING, (height - event.getBlock().getLocation().getBlockY()) * pluginInstance.getConfig().getInt("Broken.farming." + block.name()));
+            return;
+        }
 
-        Material.SUGAR_CANE -> {
-            var baseheight = event.block.location.blockY.toDouble()
-            var i = 1
-            while (baseheight < 255) {
-                baseheight++
-                val loc = Location(
-                    event.block.world,
-                    event.block.location.blockX.toDouble(),
-                    baseheight,
-                    event.block.location.blockZ.toDouble()
-                )
-                if (loc.block.type == Material.SUGAR_CANE) {
-                    if (CoreProtect.blockLookup(loc.block, 150).size == 0) { i++ }
-                }
-                else{ break }
-            }
-            lh.addExp(event.player, 4, 30*min(i,3))
+        if (block == Material.WHEAT || block == Material.CARROTS || block == Material.POTATOES || block == Material.NETHER_WART) {
+            if (!coreProtect.blockLookup(event.getBlock(), 120).isEmpty() || recentBlocks.contains(event.getBlock().getLocation())) return;
+            Ageable ageable = (Ageable) event.getBlock().getBlockData();
+            if (ageable.getAge() == ageable.getMaximumAge()) manager.addExp(player, LevelManager.ExpCat.FARMING, pluginInstance.getConfig().getInt("Broken.farming." + block.name()));
+            return;
         }
-        Material.BAMBOO -> {
-            var baseheight = event.block.location.blockY.toDouble()
-            var i = 1
-            while (baseheight < 255) {
-                baseheight++
-                val loc = Location(
-                    event.block.world,
-                    event.block.location.blockX.toDouble(),
-                    baseheight,
-                    event.block.location.blockZ.toDouble()
-                )
-                if (loc.block.type == Material.BAMBOO) {
-                    if (CoreProtect.blockLookup(loc.block, 150).size == 0) { i++ }
-                }
-                else{ break }
-            }
-            lh.addExp(event.player, 3, 3*min(i,16))
-        }
-        */
+
+        if (!coreProtect.blockLookup(event.getBlock(), 2147000000).isEmpty()) return;
 
         for (LevelManager.ExpCat expcat : LevelManager.ExpCat.values())
             manager.addExp(player, expcat, pluginInstance.getConfig().getInt("Broken." + expcat.getName() + "." + block.name()));
+    }
+
+    private CoreProtectAPI getCoreProtect() {
+        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
+
+        CoreProtect cp = (CoreProtect) plugin;
+
+        return cp.getAPI();
     }
 }

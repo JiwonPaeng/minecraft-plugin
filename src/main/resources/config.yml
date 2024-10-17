@@ -57,6 +57,12 @@ Broken:
   farming:
     PUMPKIN: 35
     MELON: 35
+    SUGAR_CANE: 30
+    BAMBOO: 16
+    WHEAT: 110
+    CARROTS: 78
+    POTATOES: 78
+    NETHER_WART: 85
 Killed:
   combat:
     PigZombie: 5
