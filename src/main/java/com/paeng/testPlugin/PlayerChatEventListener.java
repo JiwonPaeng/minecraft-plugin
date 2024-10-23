@@ -130,7 +130,7 @@ public class PlayerChatEventListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         LevelManager manager = new LevelManager();
-        String levelDisplay = getLevelStyle(manager.getTotalLevel(player));
+        String levelDisplay = getLevelStyle(manager.getTotalLevel(player.getUniqueId()));
 
         event.setFormat(levelDisplay + "§f %1$s: %2$s");
     }

@@ -45,20 +45,24 @@ Broken:
     SPRUCE_LEAVES: 4
     JUNGLE_LEAVES: 4
     AZALEA_LEAVES: 4
+    CHERRY_LEAVES: 4
     FLOWERING_AZALEA_LEAVES: 4
+    MANGROVE_LEAVES: 4
     ACACIA_LOG: 128
     JUNGLE_LOG: 128
     OAK_LOG: 128
     DARK_OAK_LOG: 128
     SPRUCE_LOG: 128
+    CHERRY_LOG: 128
     BIRCH_LOG: 128
+    MANGROVE_LOG: 128
     CRIMSON_STEM: 128
     WARPED_STEM: 128
+    BAMBOO: 16
   farming:
     PUMPKIN: 35
     MELON: 35
     SUGAR_CANE: 30
-    BAMBOO: 16
     WHEAT: 110
     CARROTS: 78
     POTATOES: 78
@@ -173,32 +177,36 @@ Caught:
       reward: 105
       name: "낚싯대"
   RARE:
+    WIND_CHARGE:
+      weight: 16
+      reward: 2222
+      name: "돌풍구"
     NAME_TAG:
-      weight: 12
+      weight: 26
       reward: 3400
       name: "이름표"
     NAUTILUS_SHELL:
-      weight: 24
+      weight: 36
       reward: 3070
       name: "앵무조개 껍데기"
     SADDLE:
-      weight: 36
+      weight: 46
       reward: 2600
       name: "안장"
     EXPERIENCE_BOTTLE:
-      weight: 48
+      weight: 56
       reward: 2777
       name: "경험치 병"
     DIAMOND:
-      weight: 60
+      weight: 66
       reward: 4000
       name: "다이아몬드"
     FISHING_ROD:
-      weight: 72
+      weight: 76
       reward: 2800
       name: "마법이 부여된 낚싯대"
     GOLDEN_APPLE:
-      weight: 84
+      weight: 86
       reward: 2840
       name: "황금 사과"
     BOW:

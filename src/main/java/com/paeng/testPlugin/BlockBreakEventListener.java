@@ -64,6 +64,8 @@ public class BlockBreakEventListener implements Listener {
 
         if (!coreProtect.blockLookup(event.getBlock(), 2147000000).isEmpty()) return;
 
+        if (recentBlocks.contains(event.getBlock().getLocation())) return;
+
         for (LevelManager.ExpCat expcat : LevelManager.ExpCat.values())
             manager.addExp(player, expcat, pluginInstance.getConfig().getInt("Broken." + expcat.getName() + "." + block.name()));
     }

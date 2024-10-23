@@ -2,6 +2,7 @@ package com.paeng.testPlugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,7 +33,7 @@ public class Profile implements CommandExecutor, Listener {
         final Player player = (Player) event.getWhoClicked();
         final int slot = event.getRawSlot();
 
-        if (slot == 40) player.closeInventory();
+        if (slot == 8) player.closeInventory();
     }
 
     @Override
@@ -45,25 +46,39 @@ public class Profile implements CommandExecutor, Listener {
 
         Player player = (Player) sender;
         LevelManager manager = new LevelManager();
+        OfflinePlayer target = (OfflinePlayer) player;
+        if (args.length >= 1) {
+            for (String uuid : manager.getLevelData(LevelManager.ExpCat.COMBAT).keySet()) {
+                if (!Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName().equalsIgnoreCase(args[0])) continue;
+                target = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
+            }
+        }
 
         Inventory inv = Bukkit.createInventory(null, 45, "§0프로필");
         for (int i = 0; i < 45; i++) inv.setItem(i, createItem(Material.BLACK_STAINED_GLASS_PANE," "));
 
-        List<String> lore = new ArrayList<>();
-        lore.add("§e★§f 레벨: §e" + manager.getTotalLevel(player));
-        int ticks_played = player.getStatistic(Statistic.PLAY_ONE_MINUTE);
-        lore.add("§b⌚§f 접속 시간: §b" + ticks_played / 72000 + "시간 " + (ticks_played % 72000) / 1200 + "분");
         ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
-        Objects.requireNonNull(meta).setOwningPlayer(player);
-        meta.setLore(lore);
 
-        meta.setDisplayName("§6⬛ " + player.getName() + "님의 정보");
+        if (args.length == 0) {
+            List<String> lore = new ArrayList<>();
+            lore.add("§e★§f 레벨: §e" + manager.getTotalLevel(player.getUniqueId()));
+            int ticks_played = player.getStatistic(Statistic.PLAY_ONE_MINUTE);
+            lore.add("§b⌚§f 접속 시간: §b" + ticks_played / 72000 + "시간 " + (ticks_played % 72000) / 1200 + "분");
+            Objects.requireNonNull(meta).setOwningPlayer(player);
+            meta.setLore(lore);
+        }
+        else {
+            meta.setOwningPlayer(target);
+        }
+
+        meta.setDisplayName("§6⬛ " + target.getName() + "님의 정보");
         playerHead.setItemMeta(meta);
         inv.setItem(4,playerHead);
 
-        for (LevelManager.ExpCat category : LevelManager.ExpCat.values()) {
+        inv.setItem(8,createItem(Material.BARRIER,"§c✖ 닫기"));
 
+        for (LevelManager.ExpCat category : LevelManager.ExpCat.values()) {
             List<String> users = new ArrayList<>();
             for (Map.Entry<String, Integer> element : manager.getExpData(category).entrySet()) users.add(element.getKey());
 
@@ -89,23 +104,58 @@ public class Profile implements CommandExecutor, Listener {
             String[] leaders = {"", "", ""};
             for (int i = 0; i < 3; i++) {
                 if (i >= users.size()) continue;
-                Player leader = Bukkit.getPlayer(UUID.fromString(users.get(i)));
-                leaders[i] = " "+ leader.getName() + " §7Lv" + manager.getLevel(leader, category) + " §8" + String.format("%.2f", manager.getProgress(player, category))+"%";
+                UUID uuid = UUID.fromString(users.get(i));
+                OfflinePlayer leader = Bukkit.getOfflinePlayer(uuid);
+                leaders[i] = " "+ leader.getName() + " §7Lv" + manager.getLevel(uuid, category) + " §8" + String.format("%.2f", manager.getProgress(uuid, category))+"%";
             }
 
-            int repeatCnt = (int) Math.round(manager.getProgress(player, category) / 5);
+            int repeatCnt = (int) Math.round(manager.getProgress(target.getUniqueId(), category) / 5);
 
-            inv.setItem(20 + category.getCode(), createItem(represents[category.getCode()], category.getIcon() + " §7Lv" + manager.getLevel(player, category),
+            inv.setItem(20 + category.getCode(), createItem(represents[category.getCode()], category.getIcon() + " §7Lv" + manager.getLevel(target.getUniqueId(), category),
                     catDes_1[category.getCode()], "§7" + category.getKorName() + " 경험치를 얻을 수 있습니다", "",
-                    "§f다음 레벨까지: §b" + String.format("%.2f", manager.getProgress(player, category)) + "% §7(" + manager.getExpData(category).get(player.getUniqueId().toString()) + "/" + manager.getExpRequirements(manager.getLevel(player, category)) + ")",
+                    "§f다음 레벨까지: §b" + String.format("%.2f", manager.getProgress(target.getUniqueId(), category)) + "% §7(" + manager.getExpData(category).get(target.getUniqueId().toString()) + "/" + manager.getExpRequirements(manager.getLevel(target.getUniqueId(), category)) + ")",
                     "§6-".repeat(repeatCnt) + "§7-".repeat(20 - repeatCnt),
                     "",
                     "§b★ 순위표",
-                    "§e#1" + leaders[0], "§6#2" + leaders[1], "§c#3" + leaders[2]
+                    "§e#1 " + leaders[0], "§6#2 " + leaders[1], "§c#3 " + leaders[2]
                     ));
         }
 
-        inv.setItem(40,createItem(Material.BARRIER,"§c✖ 닫기"));
+        List<Map.Entry<String, Integer>> totalLevelLeaderBoard = new ArrayList<>();
+        for (String uuid : manager.getLevelData(LevelManager.ExpCat.COMBAT).keySet()) {
+            totalLevelLeaderBoard.add(new AbstractMap.SimpleEntry<>(uuid, manager.getTotalLevel(UUID.fromString(uuid))));
+        }
+
+        for (int i = 0; i < totalLevelLeaderBoard.size() - 1; i++) {
+            for (int j = i + 1; j < totalLevelLeaderBoard.size(); j++) {
+                int left = totalLevelLeaderBoard.get(i).getValue();
+                int right = totalLevelLeaderBoard.get(j).getValue();
+                if (left > right) continue;
+                Map.Entry<String, Integer> temp = totalLevelLeaderBoard.get(i);
+                totalLevelLeaderBoard.set(i, totalLevelLeaderBoard.get(j));
+                totalLevelLeaderBoard.set(j, temp);
+            }
+        }
+
+        for (int i = 0; i < 5; i++) {
+            if (i >= totalLevelLeaderBoard.size()) continue;
+
+            OfflinePlayer leader_i = Bukkit.getOfflinePlayer(UUID.fromString(totalLevelLeaderBoard.get(i).getKey()));
+
+            ItemStack leaderHead = new ItemStack(Material.PLAYER_HEAD);
+            SkullMeta leaderMeta = (SkullMeta) playerHead.getItemMeta();
+
+            List<String> lore = new ArrayList<>();
+            lore.add("§e★§f 레벨: §e" + totalLevelLeaderBoard.get(i).getValue());
+            int ticks_played = leader_i.getStatistic(Statistic.PLAY_ONE_MINUTE);
+            lore.add("§b⌚§f 접속 시간: §b" + ticks_played / 72000 + "시간 " + (ticks_played % 72000) / 1200 + "분");
+            leaderMeta.setOwningPlayer(leader_i);
+            leaderMeta.setLore(lore);
+
+            leaderMeta.setDisplayName("§6⬛전체 #" + (i + 1) + " " + leader_i.getName());
+            leaderHead.setItemMeta(leaderMeta);
+            inv.setItem(38 + i, leaderHead);
+        }
 
         player.openInventory(inv);
         return true;

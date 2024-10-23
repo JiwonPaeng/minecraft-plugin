@@ -67,6 +67,19 @@ public class PlayerFishEventListener implements Listener {
         else if (weight_class < 995) item_class_code = 2; // RARE : 9.5% -> 9.5%
         else if (weight_class < 999) item_class_code = 3; // EPIC : 0.45% -> 0.4%
         else item_class_code = 4; // LEGENDARY : 0.05% -> 0.1%
+
+        int mainHandLevel = 0, offHandLevel = 0, luckEnchantmentLevel = 0;
+        try { mainHandLevel = event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getEnchantLevel(Enchantment.LUCK_OF_THE_SEA); }
+        catch (NullPointerException e) {}
+        try { offHandLevel = event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getEnchantLevel(Enchantment.LUCK_OF_THE_SEA); }
+        catch (NullPointerException e) {}
+        luckEnchantmentLevel = Math.max(mainHandLevel, offHandLevel);
+
+        for (; luckEnchantmentLevel > 0; luckEnchantmentLevel--) {
+            int upgrade = (int) (Math.random() * 100);
+            if (upgrade < 10) item_class_code = Math.min(item_class_code + 1, 4);
+        }
+
         String item_class = item_class_names[item_class_code];
 
         ConfigurationSection configurationSection = pluginInstance.getConfig().getConfigurationSection("Caught." + item_class);

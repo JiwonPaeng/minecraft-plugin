@@ -59,10 +59,6 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>playpro-repo</id>
-            <url>https://maven.playpro.com/</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -75,8 +71,9 @@
         <dependency>
             <groupId>net.coreprotect</groupId>
             <artifactId>coreprotect</artifactId>
-            <version>22.4</version>
-            <scope>provided</scope>
+            <version>23.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/CoreProtect-CE-23-0-RC1b.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

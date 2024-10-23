@@ -71,17 +71,17 @@ public class LevelManager {
 
         getExpData(category).put(UUIDString, getExpData(category).get(UUIDString) + value);
 
-        while (getExpData(category).get(UUIDString) >= getExpRequirements(getLevel(player, category))) {
+        while (getExpData(category).get(UUIDString) >= getExpRequirements(getLevel(player.getUniqueId(), category))) {
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1.0F,1.0F);
 
-            getExpData(category).put(UUIDString, getExpData(category).get(UUIDString) - getExpRequirements(getLevel(player, category)));
+            getExpData(category).put(UUIDString, getExpData(category).get(UUIDString) - getExpRequirements(getLevel(player.getUniqueId(), category)));
             getLevelData(category).put(UUIDString, getLevelData(category).get(UUIDString) + 1);
 
-            Bukkit.broadcastMessage("§e↑ " + player.getName()+"§f님이 "+ category.getIcon() + " §e" + getLevel(player, category) +"레벨§f을 달성했습니다!");
+            Bukkit.broadcastMessage("§e↑ " + player.getName()+"§f님이 "+ category.getIcon() + " §e" + getLevel(player.getUniqueId(), category) +"레벨§f을 달성했습니다!");
         }
 
-        double progress = getProgress(player, category);
-        String message = String.format(category.getStyledNameOpening() + getLevel(player, category) + "] §b(+" + value + ") "
+        double progress = getProgress(player.getUniqueId(), category);
+        String message = String.format(category.getStyledNameOpening() + getLevel(player.getUniqueId(), category) + "] §b(+" + value + ") "
                         + category.getColoredBar().repeat(((int) progress) / 2) + "§7|".repeat(50 - ((int) progress) / 2)
                         + " §7(%.1f%%)", progress);
 
@@ -89,10 +89,10 @@ public class LevelManager {
     }
 
 
-    public int getTotalLevel(Player player) {
+    public int getTotalLevel(UUID uuid) {
         int total_level = 0;
         for (ExpCat category : ExpCat.values()) {
-            total_level += getLevel(player, category);
+            total_level += getLevel(uuid, category);
         }
         return total_level;
     }
@@ -103,13 +103,13 @@ public class LevelManager {
         return exp_requirements[10];
     }
 
-    public int getLevel(Player player, ExpCat category) {
-        return getLevelData(category).get(player.getUniqueId().toString());
+    public int getLevel(UUID uuid, ExpCat category) {
+        return getLevelData(category).get(uuid.toString());
     }
 
-    public double getProgress(Player player, ExpCat category) {
-        int experience_points = getExpData(category).get(player.getUniqueId().toString());
-        int level = getLevel(player, category);
+    public double getProgress(UUID uuid, ExpCat category) {
+        int experience_points = getExpData(category).get(uuid.toString());
+        int level = getLevel(uuid, category);
         return (double) experience_points / getExpRequirements(level) * 100;
     }
 

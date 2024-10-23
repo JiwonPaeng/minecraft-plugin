@@ -2,11 +2,13 @@ name: TestPlugin
 version: '2024.10'
 authors: [jiwonpaeng, mmiimin]
 main: com.paeng.testPlugin.TestPlugin
-api-version: '1.20.6'
+api-version: '1.21.1'
 depend: [CoreProtect]
 commands:
   menu:
     description: Calls up user profile (try /m)
+    usage: /menu [name]
     aliases: m
   profile:
     description: Calls up user profile
+    usage: /profile [name]
